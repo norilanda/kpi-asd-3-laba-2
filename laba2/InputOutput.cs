@@ -8,14 +8,15 @@ namespace laba2
 {
     internal class InputOutput
     {
-        public static void DisplayState(int[][]state)
+        public static void DisplayState(State state)
         {
-            for(int i = 0; i < state.Length; i++)
+            int[][] stateMatrix = state.StateToMatrix();
+            for (int i = 0; i < stateMatrix.Length; i++)
             {
-                for (int j = 0; j < state[i].Length; j++)
+                for (int j = 0; j < stateMatrix[i].Length; j++)
                 {
                     char curr = '-';
-                    if(state[i][j] == 1)
+                    if(stateMatrix[i][j] == 1)
                         curr = 'Q';
                     Console.Write(curr + " "); 
 

@@ -34,6 +34,7 @@ namespace laba2
             this.N = N;
             this.iterations = 0;
             this.totalNodesCreated = 1;
+            nodesSaved = new List<int>();
             root = new Node(initialState, null, 0); //create the first (root) node of the tree
         }
         /*  getters/setters */
@@ -116,8 +117,16 @@ namespace laba2
                 {
                     openList.Enqueue(successors[i], successors[i].getState.F2());
                 }
+                nodesSaved.Add(openList.Count);
             }
             return false;
+        }
+        public int avaregeNodesSaved()
+        {
+            int sum = 0;
+            for(int i=0;i<nodesSaved.Count;i++)
+                sum += nodesSaved[i];
+            return sum/iterations;
         }
     }
 }

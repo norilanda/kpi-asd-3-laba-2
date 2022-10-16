@@ -56,8 +56,7 @@ namespace laba2
         }
         public int F2()
         {
-            int sum = 0;
-            const int pairOfQueens = 2;
+            int sum = 0;            
             int[] numberOfQueenInRow = new int[board.Length];
             for(int i=0; i<board.Length; i++)
             {
@@ -66,7 +65,7 @@ namespace laba2
             for(int i=0; i< numberOfQueenInRow.Length;i++)  //calculate attacking pairs in rows
             {
                 if (numberOfQueenInRow[i] > 1)
-                    sum += CalculateCombinations(numberOfQueenInRow[i], pairOfQueens);
+                    sum += CalculateCombinations(numberOfQueenInRow[i]);
             }
             for (int j = board.Length-1; j > 0; j--)    // check columns from the end
             {
@@ -81,16 +80,10 @@ namespace laba2
             }
             return sum;
         }
-        private static int CalculateCombinations(int n, int r)  //calculate combinations C(n, r)
+        private static int CalculateCombinations(int n)  //calculate combinations C(n, r)
         {
-            return State.Factorial(n) / (State.Factorial(r) * State.Factorial(n - r));             
-        }
-        private static int Factorial(int n)
-        {
-            int f = 1;
-            for (int i = n; i > 0; i--)            
-                f *= i;
-            return f;
+            const int pairOfQueens = 2;
+            return n*(n-1) / pairOfQueens;             
         }
         public static State GenerateInitialStateDifferentRows(int N)
         {

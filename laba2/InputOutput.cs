@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace laba2
 {
@@ -23,6 +24,23 @@ namespace laba2
                 }
                 Console.WriteLine();
             }
+        }
+
+        public static void DisplayResult(bool result, SolutionTree tree, TimeSpan ts)
+        {
+            if (result)
+            {
+                State solution = tree.Solution;
+                int iterations = tree.Iterations;
+                int totalNodesCreated = tree.TotalNodesCreated;
+                int avaregeNodesSaved = tree.avaregeNodesSaved();
+               // InputOutput.DisplayState(solution);
+                Console.WriteLine("Iterations = " + iterations + ";" );
+                Console.WriteLine("Total Nodes Created = " + totalNodesCreated + ";");
+                Console.WriteLine("Avarege Nodes Saved = " + avaregeNodesSaved + ";");
+            }
+            Console.WriteLine("is goal = " + result);
+            Console.WriteLine("Elapsed Time is {0:00}:{1:00}:{2:00}.{3}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
         }
     }
 }

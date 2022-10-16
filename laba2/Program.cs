@@ -3,7 +3,7 @@
 int N = 4;
 State state = State.GenerateInitialState(N); //GenerateInitialState GenerateInitialStateDifferentRows
 InputOutput.DisplayState(state);
-Console.WriteLine(state.IsGoal());
+Console.WriteLine("is goal = "+state.IsGoal());
 
 //State state1 = new State(new int[4] { 3, 1, 2, 0 });
 //InputOutput.DisplayState(state1);
@@ -14,10 +14,14 @@ Console.WriteLine(state.IsGoal());
 //Console.WriteLine(correctState.IsGoal());
 
 SolutionTree tree = new SolutionTree(N, state);
-bool result = tree.IDS();
+//bool result = tree.IDS();
+bool result = tree.AStar();
 if (result)
 {
     State solution = tree.Solution;
+    int iterations = tree.Iterations;
+    int totalNodesCreated = tree.TotalNodesCreated;
     InputOutput.DisplayState(solution);
+    Console.WriteLine("Iterations = " + iterations + "; Total Nodes Created = " + totalNodesCreated);
 }
-Console.WriteLine(result); 
+Console.WriteLine("is goal = " + result);

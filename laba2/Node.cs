@@ -12,7 +12,7 @@ namespace laba2
         private State state;    //current state of the board; indicies represent rows, numbers represent columns of a board
         private Node? parent;    //parent Node for the current node;
         private int depth;  //how many states are from initial one
-
+    
         public Node(State currState, Node? parent, int depth)
         {
             this.state = new State(currState);
@@ -27,6 +27,6 @@ namespace laba2
         public int Depth
         {
             get => depth;
-        }
+        }      
     }
 }

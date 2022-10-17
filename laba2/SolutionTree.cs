@@ -35,7 +35,7 @@ namespace laba2
             this.iterations = 0;
             this.totalNodesCreated = 1;
             nodesSaved = new List<int>();
-            root = new Node(initialState, null, 0); //create the first (root) node of the tree
+            root = new Node(initialState, 0); //create the first (root) node of the tree
         }
         /*  getters/setters */
         public int Iterations => iterations;
@@ -52,7 +52,7 @@ namespace laba2
                 {
                     State newState = new State(node.getState);
                     newState.PlaceQueen(row, node.Depth);   //node.Depth is a column index
-                    successors.Add(new Node(newState, node, node.Depth + 1));
+                    successors.Add(new Node(newState, node.Depth + 1));
                 }                    
             }
             return successors;

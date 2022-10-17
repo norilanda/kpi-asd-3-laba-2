@@ -1,9 +1,15 @@
 ﻿using laba2;
 using System.Diagnostics;
 
-int N = 8;
+int N = 15;
+int maxSizeOfSolutionToDisplay = 50;
+int algorithmChosen = 2;    // 1 - IDS, 2 - A*
+
+InputOutput.GetInput(out N, out algorithmChosen, ref maxSizeOfSolutionToDisplay);
+
 State state = State.GenerateInitialState(N); //GenerateInitialState GenerateInitialStateDifferentRows
-//InputOutput.DisplayState(state);
+if (N <= maxSizeOfSolutionToDisplay)
+    InputOutput.DisplayState(state);
 Console.WriteLine("is goal = "+state.IsGoal());
 Console.WriteLine();
 
@@ -18,9 +24,12 @@ Console.WriteLine();
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
 SolutionTree tree = new SolutionTree(N, state);
-//bool result = tree.IDS();
-bool result = tree.AStar();
+bool isSolutionFound = false;
+if(algorithmChosen == 1)
+    isSolutionFound = tree.IDS();
+if (algorithmChosen == 2)
+    isSolutionFound = tree.AStar();
 stopwatch.Stop();
 TimeSpan ts = stopwatch.Elapsed;
 
-InputOutput.DisplayResult(result, tree, ts);
+InputOutput.DisplayResult(isSolutionFound, tree, ts, maxSizeOfSolutionToDisplay);

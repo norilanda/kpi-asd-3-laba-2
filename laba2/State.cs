@@ -85,19 +85,6 @@ namespace laba2
             const int pairOfQueens = 2;
             return n*(n-1) / pairOfQueens;             
         }
-        public static State GenerateInitialStateDifferentRows(int N)
-        {
-            State state = new State(N);
-            List<int> indicies = new List<int>(Enumerable.Range(0, N).ToList());
-            Random rnd = new Random();
-            for (int col = 0; col < N; col++)
-            {
-                int row = rnd.Next(0, indicies.Count);
-                state.board[col] = indicies[row];
-                indicies.RemoveAt(row);
-            }
-            return state;
-        }
         public static State GenerateInitialState(int N)
         {
             State state = new State(N);

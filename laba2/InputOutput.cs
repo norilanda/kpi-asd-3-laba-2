@@ -9,6 +9,19 @@ namespace laba2
 {
     internal class InputOutput
     {
+        public static void GetInput(out int N, out int algo, ref int maxSizeSolutionToDisplay)
+        {
+            Console.Write("N = ");
+            N = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Choose the algorithm: IDS - 1, A* - 2:  ");
+            algo = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Do you want to display the board? yes - 1, no - 2: ");
+            int answer = Convert.ToInt32(Console.ReadLine());
+            if (answer == 1)
+                maxSizeSolutionToDisplay = N;
+            if (answer == 2)
+                maxSizeSolutionToDisplay = 0;
+        }
         public static void DisplayState(State state)
         {
             int[][] stateMatrix = state.StateToMatrix();
@@ -26,7 +39,7 @@ namespace laba2
             }
         }
 
-        public static void DisplayResult(bool result, SolutionTree tree, TimeSpan ts)
+        public static void DisplayResult(bool result, SolutionTree tree, TimeSpan ts, int maxSizeOfSolutionToDisplay = 20)
         {
             if (result)
             {
@@ -34,7 +47,8 @@ namespace laba2
                 int iterations = tree.Iterations;
                 int totalNodesCreated = tree.TotalNodesCreated;
                 int avaregeNodesSaved = tree.avaregeNodesSaved();
-               // InputOutput.DisplayState(solution);
+                if (solution.board.Length <= maxSizeOfSolutionToDisplay)
+                    InputOutput.DisplayState(solution);
                 Console.WriteLine("Iterations = " + iterations + ";" );
                 Console.WriteLine("Total Nodes Created = " + totalNodesCreated + ";");
                 Console.WriteLine("Avarege Nodes Saved = " + avaregeNodesSaved + ";");

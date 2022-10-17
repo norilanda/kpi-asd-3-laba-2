@@ -24,15 +24,15 @@ namespace laba2
         }
         public static void DisplayState(State state)
         {
-            int[][] stateMatrix = state.StateToMatrix();
+            int[][] stateMatrix = state.StateToMatrix();          
             for (int i = 0; i < stateMatrix.Length; i++)
             {
                 for (int j = 0; j < stateMatrix[i].Length; j++)
                 {
                     char curr = '-';
-                    if(stateMatrix[i][j] == 1)
+                    if (stateMatrix[i][j] == 1)
                         curr = 'Q';
-                    Console.Write(curr + " "); 
+                    Console.Write(curr + " ");
 
                 }
                 Console.WriteLine();

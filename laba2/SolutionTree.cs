@@ -88,7 +88,9 @@ namespace laba2
         {
             for (int i=0; i<=N; i++)
             {
+                int prev = totalNodesCreated;   //variable for statistic
                 Indicator result = DLS(root, i);
+                nodesSaved.Add(totalNodesCreated - prev);   //for statistic
                 iterations++;
                 if (result == Indicator.goal)
                     return true;

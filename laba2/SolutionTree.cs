@@ -46,14 +46,16 @@ namespace laba2
         private List<Node> Expand(ref Node node)
         {
             List<Node> successors = new List<Node>();
+            if (node.Depth == N)    //if node cannot have successors
+                return successors;
             for(int row = 0; row < N; row++)
             {
-                if(node.getState.IsSafe(row, node.Depth))   //if new position is safe then create a new state with placed queen here
-                {
+                //if(node.getState.IsSafe(row, node.Depth))   //if new position is safe then create a new state with placed queen here
+                //{
                     State newState = new State(node.getState);
                     newState.PlaceQueen(row, node.Depth);   //node.Depth is a column index
                     successors.Add(new Node(newState, node.Depth + 1));
-                }                    
+                //}                    
             }
             return successors;
         }
@@ -61,16 +63,16 @@ namespace laba2
         private Indicator DLS(Node node, int limit)  //Depth-Limited-Search
         {
             bool cutoff_occurred = false;
-            if (node.getState.IsGoal())
+            if (node.getState.IsGoal()) //check if node has the goal state
             {
                 solution = new State(node.getState);
                 return Indicator.goal;
             }
-            if (node.Depth == limit)
+            if (node.Depth == limit)    //if depth == limit stop search
                 return Indicator.cutoff;
             List<Node> successors = Expand(ref node);
-            totalNodesCreated += successors.Count;
-            for (int i = 0; i < successors.Count; i++)
+            totalNodesCreated += successors.Count;  //statistic
+            for (int i = 0; i < successors.Count; i++)  //for every node in successors
             {
                 Indicator result = DLS(successors[i], limit);
                 if (result == Indicator.cutoff)
@@ -103,11 +105,11 @@ namespace laba2
         public bool AStar()
         {
             PriorityQueue<Node, int> openList = new PriorityQueue<Node, int>();         
-            openList.Enqueue(root, root.getState.F2());
-            while(openList.Count > 0)
+            openList.Enqueue(root, root.getState.F2()); //add initial node to opneList
+            while(openList.Count > 0)   //while open list is not empty
             {
                 iterations++;
-                Node current = openList.Dequeue(); 
+                Node current = openList.Dequeue(); //get node with min value F2
                 if(current.getState.IsGoal())
                 {
                     solution = new State(current.getState);

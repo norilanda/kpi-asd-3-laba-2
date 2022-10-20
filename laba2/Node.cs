@@ -10,21 +10,21 @@ namespace laba2
     {
         /*  class for building searching solution tree  */
         private State state;    //current state of the board; indicies represent rows, numbers represent columns of a board
-        private int depth;  //how many states are from initial one
-    
-        public Node(State currState, int depth)
+        private Node? parent;
+        private int depth;  //how many states are from initial one        
+        private int[] action;   //[0] - column number, [1] - old row, [2] - new row
+        
+        public Node(State currState, Node? parent, int depth, int[] action)
         {
             this.state = new State(currState);
             this.depth = depth;
+            this.parent = parent;
+            this.action = action;
         }
 
-        public State getState
-        {
-            get => state;            
-        }
-        public int Depth
-        {
-            get => depth;
-        }      
+        public State getState => state; 
+        public int Depth => depth;  
+        public Node? Parent => parent;
+        public int[] Action => action;
     }
 }

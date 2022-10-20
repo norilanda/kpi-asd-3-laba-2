@@ -24,19 +24,26 @@ namespace laba2
         }
         public static void DisplayState(State state)
         {
-            int[][] stateMatrix = state.StateToMatrix();          
+            int[][] stateMatrix = state.StateToMatrix();
+            string horizontalLine = "";
+            for (int i = 0; i < stateMatrix.Length; i++)
+                horizontalLine += "|---";
+            Console.WriteLine(horizontalLine+"|");
             for (int i = 0; i < stateMatrix.Length; i++)
             {
                 for (int j = 0; j < stateMatrix[i].Length; j++)
                 {
-                    char curr = '-';
+                    char curr = ' ';
                     if (stateMatrix[i][j] == 1)
                         curr = 'Q';
-                    Console.Write(curr + " ");
+                    Console.Write("| " + curr+ " ");
 
                 }
-                Console.WriteLine();
+                Console.Write("|\n");
+                Console.WriteLine(horizontalLine + "|");
             }
+
+
         }
 
         public static void DisplayResult(bool result, SolutionTree tree, TimeSpan ts, int maxSizeOfSolutionToDisplay = 20)
@@ -46,12 +53,25 @@ namespace laba2
                 State solution = tree.Solution;
                 int iterations = tree.Iterations;
                 int totalNodesCreated = tree.TotalNodesCreated;
-                int avaregeNodesSaved = tree.avaregeNodesSaved();
+                int avaregeNodesSaved = tree.NodesSaved;
+                List<int[]> path = tree.Path;
+                Console.WriteLine("-------------------------------------------");
                 if (solution.board.Length <= maxSizeOfSolutionToDisplay)
+                {
+                    Console.WriteLine("Movements: ");
+                    int k = 1;
+                    for(int i = path.Count-1; i >= 0 ; i--)
+                    {
+                        Console.WriteLine(k+") column " + (int)(path[i][0] + 1) + ": from row "+ (int)(path[i][1]+1) + " to row " + (int)(path[i][2]+1) +";");
+                        k++;
+                    }
+                    Console.WriteLine("\nFinal state: ");
                     InputOutput.DisplayState(solution);
+                    Console.WriteLine();
+                }
                 Console.WriteLine("Iterations = " + iterations + ";" );
                 Console.WriteLine("Total Nodes Created = " + totalNodesCreated + ";");
-                Console.WriteLine("Avarege Nodes Saved = " + avaregeNodesSaved + ";");
+                Console.WriteLine("Maximum Nodes Saved = " + avaregeNodesSaved + ";");
             }
             Console.WriteLine("is goal = " + result);
             Console.WriteLine("Elapsed Time is {0:00}:{1:00}:{2:00}.{3}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);

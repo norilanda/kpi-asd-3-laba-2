@@ -13,8 +13,9 @@ namespace laba2
 
         /* some variables for statistic */
         private int iterations; //how many iterations of the algotithm were made
-        private List<int> nodesSaved;   //how many nodes the program holds at the same time
+       int nodesSaved;   //how many nodes the program holds at the same time
         private int totalNodesCreated;  //how many nodes have been created during the algorithm working
+        private List<int[]> path;   //stores all actions
 
         /* attributes for solving the problem */
         private int N;
@@ -34,38 +35,44 @@ namespace laba2
             this.N = N;
             this.iterations = 0;
             this.totalNodesCreated = 1;
-            nodesSaved = new List<int>();
-            root = new Node(initialState, 0); //create the first (root) node of the tree
+            this.path = new List<int[]>();
+            this.nodesSaved = 1;
+            root = new Node(initialState, null, 0, new int[] {-1, -1, -1}); //create the first (root) node of the tree
         }
         /*  getters/setters */
         public int Iterations => iterations;
         public int TotalNodesCreated => totalNodesCreated;
+        public List<int[]> Path => path;
+        public int NodesSaved => nodesSaved;   
 
         /*   algorithms   */
 
         private List<Node> Expand(ref Node node)
         {
+            int currentDepth = node.Depth;            
             List<Node> successors = new List<Node>();
-            if (node.Depth == N)    //if node cannot have successors
+            if (currentDepth == N)    //if node cannot have successors
                 return successors;
-            for(int row = 0; row < N; row++)
-            {
+            int currentRow = node.getState.board[currentDepth];
+            for (int row = 0; row < N; row++)
+            {               
                 //if(node.getState.IsSafe(row, node.Depth))   //if new position is safe then create a new state with placed queen here
                 //{
-                    State newState = new State(node.getState);
-                    newState.PlaceQueen(row, node.Depth);   //node.Depth is a column index
-                    successors.Add(new Node(newState, node.Depth + 1));
-                //}                    
+                State newState = new State(node.getState);
+                newState.PlaceQueen(row, currentDepth);   //node.Depth is a column index
+                successors.Add(new Node(newState, node, currentDepth + 1, new int[] { currentDepth, currentRow, row }));
+                //}
             }
             return successors;
-        }
-
+        }        
         private Indicator DLS(Node node, int limit)  //Depth-Limited-Search
         {
+            iterations++;
             bool cutoff_occurred = false;
             if (node.getState.IsGoal()) //check if node has the goal state
             {
                 solution = new State(node.getState);
+                getPath(node);
                 return Indicator.goal;
             }
             if (node.Depth == limit)    //if depth == limit stop search
@@ -92,8 +99,8 @@ namespace laba2
             {
                 int prev = totalNodesCreated;   //variable for statistic
                 Indicator result = DLS(root, i);
-                nodesSaved.Add(totalNodesCreated - prev);   //for statistic
-                iterations++;
+                if (totalNodesCreated - prev > nodesSaved)//for statistic  
+                    nodesSaved = totalNodesCreated - prev;                               
                 if (result == Indicator.goal)
                     return true;
                 else if (result == Indicator.failure)
@@ -104,7 +111,7 @@ namespace laba2
 
         public bool AStar()
         {
-            PriorityQueue<Node, int> openList = new PriorityQueue<Node, int>();         
+            PriorityQueue<Node, int> openList = new PriorityQueue<Node, int>(); //stores nodes that should be expanded         
             openList.Enqueue(root, root.getState.F2()); //add initial node to opneList
             while(openList.Count > 0)   //while open list is not empty
             {
@@ -113,6 +120,7 @@ namespace laba2
                 if(current.getState.IsGoal())
                 {
                     solution = new State(current.getState);
+                    getPath(current);
                     return true;
                 }
                 List<Node> successors = Expand(ref current);
@@ -121,16 +129,18 @@ namespace laba2
                 {
                     openList.Enqueue(successors[i], successors[i].getState.F2());
                 }
-                nodesSaved.Add(openList.Count);
+                if (openList.Count > nodesSaved)
+                    nodesSaved = openList.Count;                
             }
             return false;
         }
-        public int avaregeNodesSaved()
+        private void getPath(Node node) //returns path (actions) to final state
         {
-            int sum = 0;
-            for(int i=0;i<nodesSaved.Count;i++)
-                sum += nodesSaved[i];
-            return sum/iterations;
-        }
+            while(node.Parent != null)
+            {
+                path.Add(node.Action);
+                node = node.Parent;
+            }
+        }       
     }
 }

@@ -1,25 +1,18 @@
 ﻿using laba2;
 using System.Diagnostics;
 
-int N = 15;
-int maxSizeOfSolutionToDisplay = 50;
+int N = 8;
+int maxSizeOfSolutionToDisplay = 20;
 int algorithmChosen = 2;    // 1 - IDS, 2 - A*
 
 InputOutput.GetInput(out N, out algorithmChosen, ref maxSizeOfSolutionToDisplay);
 
 State state = State.GenerateInitialState(N); //GenerateInitialState GenerateInitialStateDifferentRows
+Console.WriteLine("Initial state:");
 if (N <= maxSizeOfSolutionToDisplay)
     InputOutput.DisplayState(state);
 Console.WriteLine("is goal = "+state.IsGoal());
 Console.WriteLine();
-
-//State state1 = new State(new int[4] { 3, 1, 2, 0 });
-//InputOutput.DisplayState(state1);
-//Console.WriteLine(state1.IsGoal());
-
-//State correctState = new State( new int[4] { 1, 3, 0, 2 });
-//InputOutput.DisplayState(correctState.StateToMatrix());
-//Console.WriteLine(correctState.IsGoal());
 
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();

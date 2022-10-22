@@ -12,9 +12,9 @@ namespace laba2
 
 
         /* some variables for statistic */
-        private int iterations; //how many iterations of the algotithm were made
-       int nodesSaved;   //how many nodes the program holds at the same time
-        private int totalNodesCreated;  //how many nodes have been created during the algorithm working
+        private long iterations; //how many iterations of the algotithm were made
+        long nodesSaved;   //how many nodes the program holds at the same time
+        private long totalNodesCreated;  //how many nodes have been created during the algorithm working
         private List<int[]> path;   //stores all actions
 
         /* attributes for solving the problem */
@@ -40,10 +40,10 @@ namespace laba2
             root = new Node(initialState, null, 0, new int[] {-1, -1, -1}); //create the first (root) node of the tree
         }
         /*  getters/setters */
-        public int Iterations => iterations;
-        public int TotalNodesCreated => totalNodesCreated;
+        public long Iterations => iterations;
+        public long TotalNodesCreated => totalNodesCreated;
         public List<int[]> Path => path;
-        public int NodesSaved => nodesSaved;   
+        public long NodesSaved => nodesSaved;   
 
         /*   algorithms   */
 
@@ -97,7 +97,7 @@ namespace laba2
         {
             for (int i=0; i<=N; i++)
             {
-                int prev = totalNodesCreated;   //variable for statistic
+                long prev = totalNodesCreated;   //variable for statistic
                 Indicator result = DLS(root, i);
                 if (totalNodesCreated - prev > nodesSaved)//for statistic  
                     nodesSaved = totalNodesCreated - prev;                               

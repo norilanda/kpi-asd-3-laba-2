@@ -37,6 +37,8 @@ namespace laba2
             this.totalNodesCreated = 1;
             this.path = new List<int[]>();
             this.nodesSaved = 1;
+            
+            Node.InitializeMemoryUsage(N);
             root = new Node(initialState, null, 0, new int[] {-1, -1, -1}); //create the first (root) node of the tree
         }
         /*  getters/setters */

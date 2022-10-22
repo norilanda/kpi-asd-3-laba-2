@@ -9,6 +9,13 @@ namespace laba2
     internal class Node
     {
         /*  class for building searching solution tree  */
+        // memory : 
+        public static int memoryUsageInBytes = 0;
+        public static void InitializeMemoryUsage(int N)
+        {
+            memoryUsageInBytes += sizeof(int)*N + sizeof(int) + sizeof(int)*3;
+        }
+
         private State state;    //current state of the board; indicies represent rows, numbers represent columns of a board
         private Node? parent;
         private int depth;  //how many states are from initial one        

@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace laba2
 {
     internal class SolutionTree
     {/*  class for algorithms implementation  */
 
+        const long bytesInOneGB = 1024 * 1024 * 1024;
+        const long msIn30Minutes = 1800000;
+        Stopwatch innerTimer;
 
         /* some variables for statistic */
         private long iterations; //how many iterations of the algotithm were made
@@ -40,6 +44,9 @@ namespace laba2
             
             Node.InitializeMemoryUsage(N);
             root = new Node(initialState, null, 0, new int[] {-1, -1, -1}); //create the first (root) node of the tree
+
+            innerTimer = new Stopwatch();
+            innerTimer.Start();
         }
         /*  getters/setters */
         public long Iterations => iterations;
@@ -67,7 +74,7 @@ namespace laba2
             }
             return successors;
         }        
-        private Indicator DLS(Node node, int limit)  //Depth-Limited-Search
+        private Indicator DLS(Node node, int limit, ref long currNodesInMemory)  //Depth-Limited-Search
         {
             iterations++;
             bool cutoff_occurred = false;
@@ -78,17 +85,29 @@ namespace laba2
                 return Indicator.goal;
             }
             if (node.Depth == limit)    //if depth == limit stop search
-                return Indicator.cutoff;
+            {
+                currNodesInMemory--;
+                return Indicator.cutoff; 
+            }
             List<Node> successors = Expand(ref node);
+
+            /*statistic*/
             totalNodesCreated += successors.Count;  //statistic
+            currNodesInMemory += successors.Count;
+            if (currNodesInMemory > nodesSaved) nodesSaved = currNodesInMemory;
+            if (currNodesInMemory * Node.memoryUsageInBytes > bytesInOneGB || innerTimer.ElapsedMilliseconds > msIn30Minutes) //memory&time restriction
+                return Indicator.failure;
+            /*statistic*/
+
             for (int i = 0; i < successors.Count; i++)  //for every node in successors
             {
-                Indicator result = DLS(successors[i], limit);
+                Indicator result = DLS(successors[i], limit, ref currNodesInMemory);
                 if (result == Indicator.cutoff)
                     cutoff_occurred = true;
-                else if(result != Indicator.failure)
+                else if(result != Indicator.failure)    //if is goal
                     return result;
             }
+            currNodesInMemory--;
             if (cutoff_occurred)
                 return Indicator.cutoff;
             else
@@ -99,10 +118,8 @@ namespace laba2
         {
             for (int i=0; i<=N; i++)
             {
-                long prev = totalNodesCreated;   //variable for statistic
-                Indicator result = DLS(root, i);
-                if (totalNodesCreated - prev > nodesSaved)//for statistic  
-                    nodesSaved = totalNodesCreated - prev;                               
+                long currNodeSaved = 0;
+                Indicator result = DLS(root, i, ref currNodeSaved);                              
                 if (result == Indicator.goal)
                     return true;
                 else if (result == Indicator.failure)
@@ -127,7 +144,9 @@ namespace laba2
                 }
                 List<Node> successors = Expand(ref current);
                 totalNodesCreated += successors.Count;
-                for (int i = 0; i < successors.Count; i++)
+                if (openList.Count * Node.memoryUsageInBytes > bytesInOneGB || innerTimer.ElapsedMilliseconds > msIn30Minutes)//memory&time restriction
+                    return false;
+                    for (int i = 0; i < successors.Count; i++)
                 {
                     openList.Enqueue(successors[i], successors[i].getState.F2());
                 }

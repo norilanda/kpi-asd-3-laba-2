@@ -120,6 +120,8 @@ namespace laba2
                     Console.WriteLine();
                 }
             }
+            else
+                Console.WriteLine("FAILED");
             Console.WriteLine("Iterations = " + iterations + ";" );
             Console.WriteLine("Total Nodes Created = " + totalNodesCreated + ";");
             Console.WriteLine("Maximum Nodes Saved = " + avaregeNodesSaved + ";");

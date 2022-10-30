@@ -54,9 +54,9 @@ namespace laba2
         {
             board[columnIndex] = row;
         }
-        public int F2()
+        public int F2(int depth)
         {
-            int sum = 0;            
+            int sum = 0;   //h(n)         
             int[] numberOfQueenInRow = new int[board.Length];
             for(int i=0; i<board.Length; i++)
             {
@@ -78,6 +78,7 @@ namespace laba2
                         sum++;
                 }
             }
+            sum += depth;   //g(n) + h(n)
             return sum;
         }
         private static int CalculateCombinations(int n)  //calculate combinations C(n, r)

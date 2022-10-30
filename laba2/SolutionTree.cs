@@ -131,7 +131,7 @@ namespace laba2
         public bool AStar()
         {
             PriorityQueue<Node, int> openList = new PriorityQueue<Node, int>(); //stores nodes that should be expanded         
-            openList.Enqueue(root, root.getState.F2()); //add initial node to opneList
+            openList.Enqueue(root, root.getState.F2(root.Depth)); //add initial node to opneList
             while(openList.Count > 0)   //while open list is not empty
             {
                 iterations++;
@@ -148,7 +148,7 @@ namespace laba2
                     return false;
                     for (int i = 0; i < successors.Count; i++)
                 {
-                    openList.Enqueue(successors[i], successors[i].getState.F2());
+                    openList.Enqueue(successors[i], successors[i].getState.F2(successors[i].Depth));
                 }
                 if (openList.Count > nodesSaved)
                     nodesSaved = openList.Count;                
